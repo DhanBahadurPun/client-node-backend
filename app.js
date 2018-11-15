@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const expressValidator = require("express-validator");
 const cors = require("cors");
+const passport = require('passport')
 
 const app = express();
 
@@ -21,6 +22,12 @@ app.use(
   })
 );
 app.use(cors());
+
+// passport middleware
+app.use(passport.initialize());
+
+// passport Config
+require('./config/passport')(passport)
 // Middleware function
 app.use("/api/users", users);
 app.use("/api/profile", profile);
@@ -41,10 +48,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(config.app.port, function(err, done) {
+app.listen(config.port, function(err, done) {
   if (err) {
     console.log("error is " + err);
   } else {
-    console.log("server listening at port " + config.app.port);
+    console.log("server listening at port " + config.port);
   }
 });
